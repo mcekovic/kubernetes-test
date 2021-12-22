@@ -1,10 +1,11 @@
 package org.strangeforest.kubernetestest;
 
+import java.util.*;
+
 import lombok.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.boot.context.properties.*;
-import org.springframework.context.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.*;
 
@@ -32,7 +33,11 @@ public class KubernetesTestApplication {
 
 		@GetMapping("/{name}")
 		private Mono<String> hello(@PathVariable String name) {
-			return Mono.just(format("Hello %1$s!", name));
+			return Mono.just(format("Hello %1$s!", Objects.equals(name, "oom") ? oom() : name));
+		}
+
+		private static String oom() {
+			return Arrays.toString(new byte[1024 * 1024 * 1024]);
 		}
 	}
 }
