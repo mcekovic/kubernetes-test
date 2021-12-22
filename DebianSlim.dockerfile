@@ -1,8 +1,7 @@
 ARG JAVA_VERSION=17.0.1
 FROM openjdk:${JAVA_VERSION}-slim as build
 WORKDIR /build
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+COPY target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM openjdk:${JAVA_VERSION}-slim
