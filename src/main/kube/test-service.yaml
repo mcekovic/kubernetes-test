@@ -3,13 +3,10 @@ kind: Service
 metadata:
   name: test-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: test-app
   ports:
     - name: http
       port: 8080
       targetPort: http
-    - name: jmx
-      port: 9999
-      targetPort: jmx
