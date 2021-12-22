@@ -21,33 +21,30 @@ spec:
         app: test-app
     spec:
       containers:
-        - name: test-app
-          image: mcekovic/test-app:latest
-          imagePullPolicy: Never
-          resources:
-            requests:
-              cpu: 100m
-              memory: 192Mi
-            limits:
-              cpu: 1000m
-              memory: 1Gi
-          ports:
-            - name: http
-              containerPort: 8080
-            - name: jmx
-              containerPort: 9999
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health/liveness
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-          readinessProbe:
-            httpGet:
-              port: 8080
-              path: /actuator/health/readiness
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-
-
-
+      - name: test-app
+        image: mcekovic/test-app:latest
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 100m
+            memory: 192Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: jmx
+          containerPort: 9999
+        livenessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health/liveness
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /actuator/health/readiness
+          initialDelaySeconds: 10
+          timeoutSeconds: 5

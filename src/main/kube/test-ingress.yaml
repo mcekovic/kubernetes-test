@@ -6,12 +6,12 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - http:
-        paths:
-          - path: /hello
-            pathType: Prefix
-            backend:
-              service:
-                name: test-service
-                port:
-                  name: http
+  - http:
+      paths:
+      - path: /hello
+        pathType: Prefix
+        backend:
+          service:
+            name: test-service
+            port:
+              name: http

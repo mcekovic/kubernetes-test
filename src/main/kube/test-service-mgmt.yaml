@@ -7,12 +7,12 @@ spec:
   selector:
     app: test-app
   ports:
-    - name: http
-      port: 8080
-      targetPort: http
-    - name: jmx
-      port: 8999
-      targetPort: jmx
+  - name: http
+    port: 8080
+    targetPort: http
+  - name: jmx
+    port: 8999
+    targetPort: jmx
 ---
 apiVersion: v1
 kind: Service
@@ -23,12 +23,12 @@ spec:
   selector:
     app: test-app
   ports:
-    - name: http
-      port: 8080
-      targetPort: http
-      nodePort: 30080
-    - name: jmx
-      port: 9999
-      targetPort: jmx
-      nodePort: 30999
+  - name: http
+    port: 8080
+    targetPort: http
+    nodePort: 30080
+  - name: jmx
+    port: 9999
+    targetPort: jmx
+    nodePort: 30999
   externalTrafficPolicy: Local
