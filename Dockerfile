@@ -1,10 +1,11 @@
-FROM azul/zulu-openjdk-alpine:17.0.1-jre-headless as build
+ARG JAVA_VERSION=17.0.1
+FROM azul/zulu-openjdk-alpine:${JAVA_VERSION}-jre-headless as build
 WORKDIR /build
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM azul/zulu-openjdk-alpine:17.0.1-jre-headless
+FROM azul/zulu-openjdk-alpine:${JAVA_VERSION}-jre-headless
 RUN addgroup -S appuser && adduser -S -h /app -s /bin/ash -G appuser appuser
 USER appuser
 WORKDIR /app

@@ -36,6 +36,9 @@ spec:
           containerPort: 8080
         - name: jmx
           containerPort: 9999
+        volumeMounts:
+        - name: test-app-logs
+          mountPath: /app/logs
         livenessProbe:
           httpGet:
             port: 8080
@@ -48,3 +51,6 @@ spec:
             path: /actuator/health/readiness
           initialDelaySeconds: 10
           timeoutSeconds: 5
+      volumes:
+      - name: test-app-logs
+        emptyDir: {}
