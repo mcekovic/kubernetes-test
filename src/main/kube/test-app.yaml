@@ -33,6 +33,8 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+            - name: jmx
+              containerPort: 9999
           livenessProbe:
             httpGet:
               port: 8080

@@ -1,7 +1,10 @@
 package org.strangeforest.kubernetestest;
 
+import lombok.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
+import org.springframework.boot.context.properties.*;
+import org.springframework.context.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.*;
 
@@ -16,11 +19,15 @@ public class KubernetesTestApplication {
 
 	@RestController
 	@RequestMapping("/hello")
+	@ConfigurationProperties("hello")
+	@Getter @Setter
 	public static class HelloController {
+
+		private String defaultName = "World";
 
 		@GetMapping
 		private Mono<String> hello() {
-			return hello("World");
+			return hello(defaultName);
 		}
 
 		@GetMapping("/{name}")
