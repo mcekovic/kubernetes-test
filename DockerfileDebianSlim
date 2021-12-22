@@ -13,7 +13,4 @@ COPY --from=build /build/dependencies/ ./
 COPY --from=build /build/spring-boot-loader/ ./
 COPY --from=build /build/application/ ./
 RUN mkdir logs
-ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-XX:MaxRAMPercentage=50.0",\
- "-XX:+ExplicitGCInvokesConcurrent", "-Xlog:gc=info:file=logs/gc.log:time,tags:filecount=10,filesize=10m",\
- "-Dcom.sun.management.jmxremote", "-Dcom.sun.management.jmxremote.port=9999", "-Dcom.sun.management.jmxremote.rmi.port=9999", "-Djava.rmi.server.hostname=0.0.0.0", "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false",\
- "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
