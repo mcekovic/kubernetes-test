@@ -6,8 +6,6 @@ metadata:
     app: test-app
 data:
   hello.default-name: K3s
-  spring.datasource.host: ${POSTGRESQL_SERVICE_HOST}
-  spring.datasource.port: ${POSTGRESQL_SERVICE_PORT}
   JDK_JAVA_OPTIONS: -XX:MaxRAMPercentage=50.0 -Djava.net.preferIPv4Stack=true
     -XX:+ExplicitGCInvokesConcurrent -Xlog:gc=info:file=logs/gc.log:time,tags:filecount=10,filesize=10m
     -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Djava.rmi.server.hostname=0.0.0.0 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
@@ -72,6 +70,9 @@ spec:
         envFrom:
         - configMapRef:
             name: test-app-config
+        env:
+        - name: spring.datasource.url
+          value: $(POSTGRESQL_SERVICE_HOST):$(POSTGRESQL_SERVICE_PORT)/postgres
       volumes:
       - name: test-app-logs
         emptyDir: {}
