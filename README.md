@@ -7,12 +7,13 @@
 - Rancher Desktop 0.7+ (containerd runtime)
 
 ### Build Java Artifact
-- `mvn clean install`
+- `mvn clean package`
 
 ### Build Docker Image
 - `nerdctl image build --namespace k8s.io -t k8s-test/test-app:latest .`
 
 ### Deploy to Kubernetes
+- `kubectl apply -f src/main/k8s/postgresql`
 - `kubectl apply -f src/main/k8s/test-app`
 
 ### Upgrade App
@@ -25,6 +26,8 @@
 
 ### Install Kubernetes Dashboard
 [Official Instructions](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+
+Helper objects are in `src/main/k8s/dashboard`
 
 ### Important Points
 
@@ -45,5 +48,5 @@
 - Externalize JVM options into pod's environment variables (`env` section)
   + Use relative heap limits: `-XX:MaxRAMPercentage=50.0`
   + Expose JMX port (see `test-app.yaml / env / JDK_JAVA_OPTIONS`)
-- Externalize app configuration into pod's environment variables (or ConfigMap?)
-- Use volumes for logs (which volume type?)
+- Externalize app configuration into pod's environment variables that reference ConfigMap
+- Use volumes for logs?

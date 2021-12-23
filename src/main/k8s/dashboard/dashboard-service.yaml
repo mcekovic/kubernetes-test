@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: kubernetes-dashboard
+  name: kubernetes-dashboard-local
   labels:
     k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard-local
-  namespace: kubernetes-dashboard
 spec:
   type: LoadBalancer
   selector:
