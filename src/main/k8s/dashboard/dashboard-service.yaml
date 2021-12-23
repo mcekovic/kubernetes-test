@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard-local
+  namespace: kubernetes-dashboard
+spec:
+  type: LoadBalancer
+  selector:
+    k8s-app: kubernetes-dashboard
+  ports:
+  - name: https
+    port: 8443
+    targetPort: 8443
