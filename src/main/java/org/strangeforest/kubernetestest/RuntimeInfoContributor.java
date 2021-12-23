@@ -1,52 +1,37 @@
 package org.strangeforest.kubernetestest;
 
 import java.lang.management.*;
-import java.net.*;
 import java.util.*;
 
 import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.*;
 import org.springframework.boot.actuate.info.*;
 import org.springframework.context.*;
+import org.springframework.r2dbc.core.*;
 import org.springframework.stereotype.*;
+
+import static org.strangeforest.kubernetestest.Util.*;
 
 @Component
 @Slf4j
 public class RuntimeInfoContributor implements InfoContributor {
 
-	private static final String UNKNOWN = "Unknown";
+	@Autowired
+	private DatabaseClient dbClient;
 
 	@Override public void contribute(Info.Builder builder) {
 		builder.withDetail("os", Map.of(
 			"name", System.getProperty("os.name"),
 			"version", System.getProperty("os.version"),
-			"hostname", getHostName(),
-			"ip", getHostAddress()
+			"hostname", hostName(),
+			"ip", hostAddress()
 		)).withDetail("runtime", Map.of(
 			"jvm.version", ManagementFactory.getRuntimeMXBean().getVmVersion(),
 			"spring-boot.version", getJavaPackageVersion(SpringApplication.class),
-			"spring.version", getJavaPackageVersion(ApplicationContext.class)
+			"spring.version", getJavaPackageVersion(ApplicationContext.class),
+			"postgresql.version", getPostgreSqlVersion()
 		));
-	}
-
-	private String getHostName() {
-		try {
-			return InetAddress.getLocalHost().getHostName();
-		}
-		catch (UnknownHostException ex) {
-			log.error("Error getting hostname", ex);
-			return UNKNOWN;
-		}
-	}
-
-	private String getHostAddress() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress();
-		}
-		catch (UnknownHostException ex) {
-			log.error("Error getting host address", ex);
-			return UNKNOWN;
-		}
 	}
 
 	private String getJavaPackageVersion(Class<?> cls) {
@@ -55,6 +40,19 @@ public class RuntimeInfoContributor implements InfoContributor {
 		}
 		catch (Exception ex) {
 			log.error("Error getting Java Package version for class " + cls.getName(), ex);
+			return UNKNOWN;
+		}
+	}
+
+	private String getPostgreSqlVersion() {
+		try {
+			return String.valueOf(dbClient.sql("SELECT version()")
+				.fetch().one()
+				.blockOptional().map(r -> r.get("version"))
+				.orElse(UNKNOWN));
+		}
+		catch (Exception ex) {
+			log.error("Error getting PostgreSQL version", ex);
 			return UNKNOWN;
 		}
 	}

@@ -1,0 +1,5 @@
+CREATE TABLE hello_counter (
+  name TEXT PRIMARY KEY,
+  count BIGINT NOT NULL DEFAULT 0,
+  version BIGINT NOT NULL DEFAULT 0
+);
