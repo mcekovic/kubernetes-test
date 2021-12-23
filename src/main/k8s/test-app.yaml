@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: test-app
-        image: mcekovic/test-app:latest
+        image: k8s-test/test-app:latest
         imagePullPolicy: Never
         resources:
           requests:
