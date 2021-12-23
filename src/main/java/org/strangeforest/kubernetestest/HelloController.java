@@ -49,8 +49,8 @@ public class HelloController {
 	}
 
 	private static String burn() {
-		var seed = 0.5;
-		for (int i = 0; i < 100000; i++)
+		var seed = new Random().nextDouble(1.0);
+		for (int i = 0; i < 10_000_000; i++)
 			seed = Math.sin(1.0 + seed);
 		return String.valueOf(seed);
 	}
