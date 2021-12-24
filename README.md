@@ -9,7 +9,7 @@
 ### Build Java Artifact
 - `mvn clean package`
 
-### Build OCI/Docker Image
+### Build Container Image
 - `nerdctl image build --namespace k8s.io -t k8s-test/test-app:latest .`
 
 ### Deploy to Kubernetes
@@ -17,7 +17,7 @@
 - `kubectl apply -f src/main/k8s/test-app`
 
 ### Upgrade App
-- Build Java artifact and OCI/Docker image
+- Build Java artifact and container image
 - Restart app: `kubectl rollout restart deployment/test-app`
 
 ### Monitor via JMX and VisualVM
@@ -31,7 +31,7 @@ Helper objects are in `src/main/k8s/dashboard`
 
 ### Important Points
 
-#### OCI/Docker Image
+#### Container Image
 - Use fixed base image version
 - Use two-stage image build to reduce image size and attack surface area
 - In the build stage fetch the Spring Boot fat jar Java artifact (in this test plain copy is used for simplicity)
