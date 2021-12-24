@@ -2,14 +2,14 @@
 
 ### Prerequisites
 - JDK 17+
-- Maven 3.6+
+- Maven 3.8+
 - WSL 2
 - Rancher Desktop 0.7+ (containerd runtime)
 
 ### Build Java Artifact
 - `mvn clean package`
 
-### Build Docker Image
+### Build OCI/Docker Image
 - `nerdctl image build --namespace k8s.io -t k8s-test/test-app:latest .`
 
 ### Deploy to Kubernetes
@@ -17,7 +17,7 @@
 - `kubectl apply -f src/main/k8s/test-app`
 
 ### Upgrade App
-- Build Java artifact and Docker image
+- Build Java artifact and OCI/Docker image
 - Restart app: `kubectl rollout restart deployment/test-app`
 
 ### Monitor via JMX and VisualVM
@@ -31,13 +31,13 @@ Helper objects are in `src/main/k8s/dashboard`
 
 ### Important Points
 
-#### Docker Image
+#### OCI/Docker Image
 - Use fixed base image version
 - Use two-stage image build to reduce image size and attack surface area
 - In the build stage fetch the Spring Boot fat jar Java artifact (in this test plain copy is used for simplicity)
 - Use Spring Boot layer tools to produce a layered image
 - Do not run the container as root, create group and user for the app
-- Externalize JVM options into Kubernetes deployment object
+- Externalize JVM options out of Dockerfile into Kubernetes descriptors
 - Build image directly into `k8s.io` namespace to avoid using image registry for local development
 
 #### Kubernetes Objects
@@ -45,8 +45,11 @@ Helper objects are in `src/main/k8s/dashboard`
 - Limit CPU and memory resources
 - Use Spring Boot liveness and readiness health check probes (set `initialDelaySeconds` as default is `0`)
 - Use pod lifecycle `preStop` pause to avoid that Kubernetes routes traffic to pods that are shutting down
-- Externalize JVM options into pod's environment variables (`env` section)
+- Externalize JVM options and app configuration into ConfigMap that is injected into pod's environment variables 
   + Use relative heap limits: `-XX:MaxRAMPercentage=50.0`
-  + Expose JMX port (see `test-app.yaml / env / JDK_JAVA_OPTIONS`)
-- Externalize app configuration into pod's environment variables that reference ConfigMap
-- Use volumes for logs?
+  + Expose JMX port (see `test-app.yaml / test-app-config / JDK_JAVA_OPTIONS`)
+  + Reference dependent stateful services by StatefulSets hostnames
+  + Reference dependent stateless services hosts and ports from environment variables directly in `env` section
+  + Materialize application configuration file for expanded properties to be visible in container
+- Use volumes for app logs?
+- Install databases as StatefulSets with PersistentVolume and VolumeClaimTemplates

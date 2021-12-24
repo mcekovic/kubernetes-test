@@ -5,7 +5,8 @@ metadata:
   labels:
     app: postgresql
 spec:
-  type: NodePort
+  type: ClusterIP
+  clusterIP: None
   ports:
   - name: psql
     port: 5432

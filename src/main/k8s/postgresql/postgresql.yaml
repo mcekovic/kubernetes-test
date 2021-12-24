@@ -10,12 +10,14 @@ data:
   POSTGRES_PASSWORD: postgres
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: postgresql
   labels:
     app: postgresql
 spec:
+  serviceName: postgresql
+  revisionHistoryLimit: 2
   replicas: 1
   selector:
     matchLabels:
@@ -37,7 +39,14 @@ spec:
         envFrom:
         - configMapRef:
             name: postgresql-config
-      volumes:
-      - name: postgresql-data
-        persistentVolumeClaim:
-          claimName: postgresql-volume-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: postgresql-data
+      labels:
+        app: postgresql
+    spec:
+      storageClassName: manual
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 128Mi

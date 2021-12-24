@@ -1,29 +1,14 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: postgresql-volume
+  name: postgresql-data
   labels:
     type: local
     app: postgresql
 spec:
   storageClassName: manual
   capacity:
-    storage: 256Mi
-  accessModes:
-  - ReadWriteMany
+    storage: 128Mi
+  accessModes: ["ReadWriteOnce"]
   hostPath:
-    path: "/mnt/data"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: postgresql-volume-claim
-  labels:
-    app: postgresql
-spec:
-  storageClassName: manual
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 256Mi
+    path: "/mnt/postgresql/data"
