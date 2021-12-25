@@ -1,4 +1,4 @@
-name: Build Artifact
+name: Build
 
 on:
   push:
@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
 
     - name: Checkout repository
