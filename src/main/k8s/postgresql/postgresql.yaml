@@ -6,8 +6,17 @@ metadata:
     app: postgresql
 data:
   POSTGRES_DB: postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql-secret
+  labels:
+    app: postgresql
+stringData:
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
+data:
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -39,12 +48,15 @@ spec:
         envFrom:
         - configMapRef:
             name: postgresql-config
+        - secretRef:
+            name: postgresql-secret
   volumeClaimTemplates:
   - metadata:
       name: postgresql-data
       labels:
         app: postgresql
     spec:
+      volumeName: postgresql-data
       storageClassName: manual
       accessModes: ["ReadWriteOnce"]
       resources:
