@@ -1,0 +1,4 @@
+resources:
+- ../../test-app
+patchesStrategicMerge:
+- test-app.yaml
