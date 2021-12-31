@@ -11,4 +11,5 @@ spec:
     storage: 128Mi
   accessModes: ["ReadWriteOnce"]
   hostPath:
+    type: DirectoryOrCreate
     path: "/mnt/postgresql/data"

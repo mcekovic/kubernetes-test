@@ -1,0 +1,27 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: test-app-logs
+  labels:
+    type: local
+    app: test-app
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 16Mi
+  accessModes: ["ReadWriteMany"]
+  hostPath:
+    type: DirectoryOrCreate
+    path: "/mnt/test-app/logs"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-app-logs
+spec:
+  storageClassName: manual
+  volumeName: test-app-logs
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 16Mi
