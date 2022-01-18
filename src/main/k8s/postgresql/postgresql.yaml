@@ -57,7 +57,7 @@ spec:
         app: postgresql
     spec:
       volumeName: postgresql-data
-      storageClassName: manual
+      storageClassName: local-path
       accessModes: ["ReadWriteOnce"]
       resources:
         requests:

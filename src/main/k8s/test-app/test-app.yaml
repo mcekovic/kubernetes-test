@@ -36,8 +36,8 @@ spec:
         app: test-app
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/path: /actuator/prometheus
         prometheus.io/port: "8080"
+        prometheus.io/path: /actuator/prometheus
     spec:
       containers:
       - name: test-app
@@ -57,7 +57,7 @@ spec:
           containerPort: 9999
         volumeMounts:
         - name: conf
-          mountPath: "/app/conf"
+          mountPath: /app/conf
           readOnly: true
         - name: logs
           mountPath: /app/logs

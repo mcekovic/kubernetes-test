@@ -6,22 +6,23 @@ metadata:
     type: local
     app: test-app
 spec:
-  storageClassName: manual
+  storageClassName: local-path
   capacity:
     storage: 16Mi
   accessModes: ["ReadWriteMany"]
   hostPath:
     type: DirectoryOrCreate
-    path: "/mnt/test-app/logs"
+    path: /mnt/test-app/logs
+  persistentVolumeReclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: test-app-logs
 spec:
-  storageClassName: manual
+  storageClassName: local-path
   volumeName: test-app-logs
   accessModes: ["ReadWriteMany"]
   resources:
     requests:
-      storage: 16Mi
+      storage: 4Mi
