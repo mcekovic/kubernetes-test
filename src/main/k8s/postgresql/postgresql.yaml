@@ -58,7 +58,7 @@ spec:
     spec:
       volumeName: postgresql-data
       storageClassName: local-path
-      accessModes: ["ReadWriteOnce"]
+      accessModes: [ReadWriteOnce]
       resources:
         requests:
           storage: 128Mi

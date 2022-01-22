@@ -9,7 +9,7 @@ spec:
   storageClassName: local-path
   capacity:
     storage: 16Mi
-  accessModes: ["ReadWriteMany"]
+  accessModes: [ReadWriteMany]
   hostPath:
     type: DirectoryOrCreate
     path: /mnt/test-app/logs
@@ -22,7 +22,7 @@ metadata:
 spec:
   storageClassName: local-path
   volumeName: test-app-logs
-  accessModes: ["ReadWriteMany"]
+  accessModes: [ReadWriteMany]
   resources:
     requests:
       storage: 4Mi
