@@ -1,11 +1,7 @@
 ARG JAVA_VERSION=17.0.1
 FROM openjdk:${JAVA_VERSION}-slim as build
-WORKDIR /source
-VOLUME ~/.m2:/root/.m2
-COPY ./ ./
-RUN ./mvnw -B clean package
 WORKDIR /build
-COPY ../source/target/*.jar app.jar
+COPY target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM openjdk:${JAVA_VERSION}-slim

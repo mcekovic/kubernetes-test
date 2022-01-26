@@ -101,17 +101,4 @@
 		</plugins>
 	</build>
 
-	<profiles>
-		<profile>
-			<id>integration-tests</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-failsafe-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 </project>

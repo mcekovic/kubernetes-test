@@ -1,11 +1,7 @@
 ARG JAVA_VERSION=17.0.1
 FROM azul/zulu-openjdk-alpine:${JAVA_VERSION}-jre-headless as build
-WORKDIR /source
-VOLUME ~/.m2:/root/.m2
-COPY ./ ./
-RUN ./mvnw -B clean package
 WORKDIR /build
-RUN mv ../source/target/*.jar app.jar
+COPY target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM azul/zulu-openjdk-alpine:${JAVA_VERSION}-jre-headless
