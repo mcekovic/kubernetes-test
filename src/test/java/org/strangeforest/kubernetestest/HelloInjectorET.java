@@ -30,12 +30,12 @@ class HelloInjectorET {
 	}
 
 	@Test
-	void sayHello() throws Exception {
+	void sayHellos() throws Exception {
 		var customThreadPool = new ForkJoinPool(PARALLELISM);
 		var task = customThreadPool.submit(() ->
 			rangeClosed(1, REPETITIONS)
 				.parallel()
-				.mapToObj(this::doSayHello)
+				.mapToObj(this::sayHello)
 				.collect(groupingBy(Result::message))
 		);
 		var results = task.join().values().stream()
@@ -50,7 +50,7 @@ class HelloInjectorET {
 			throw error.get().exception();
 	}
 
-	private Result doSayHello(int repetition) {
+	private Result sayHello(int repetition) {
 		var request = new Request.Builder()
 			.url("http://localhost:8080/hello/K8s-" + rnd.nextInt(HELLOS))
 			.build();
