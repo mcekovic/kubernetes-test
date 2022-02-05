@@ -20,13 +20,13 @@ metadata:
   labels:
     app: test-app
 spec:
-  replicas: 3
+  replicas: 10
   revisionHistoryLimit: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 10%
-      maxUnavailable: 10%
+      maxSurge: 20%
+      maxUnavailable: 20%
   selector:
     matchLabels:
       app: test-app

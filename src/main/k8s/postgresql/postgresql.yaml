@@ -18,6 +18,13 @@ stringData:
 data:
   POSTGRES_PASSWORD: cG9zdGdyZXM=
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-init
+data:
+  max_conns.sql: "ALTER SYSTEM SET max_connections = 200;"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -43,13 +50,19 @@ spec:
         - name: psql
           containerPort: 5432
         volumeMounts:
-          - name: postgresql-data
-            mountPath: /var/lib/postgresql/data
+        - name: postgresql-data
+          mountPath: /var/lib/postgresql/data
+        - name: postgresql-init
+          mountPath: /docker-entrypoint-initdb.d
         envFrom:
         - configMapRef:
             name: postgresql-config
         - secretRef:
             name: postgresql-secret
+      volumes:
+      - name: postgresql-init
+        configMap:
+          name: postgresql-init
   volumeClaimTemplates:
   - metadata:
       name: postgresql-data
