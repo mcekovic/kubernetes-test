@@ -5,5 +5,6 @@ metadata:
 commonLabels:
   app: test-app
 resources:
+- test-app-volume.yaml
 - test-app.yaml
 - test-app-service.yaml

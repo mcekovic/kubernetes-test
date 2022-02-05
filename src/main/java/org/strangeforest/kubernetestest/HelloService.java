@@ -2,12 +2,12 @@ package org.strangeforest.kubernetestest;
 
 import java.util.*;
 
-import dev.failsafe.*;
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.dao.*;
 import org.springframework.stereotype.*;
 import reactor.core.publisher.*;
+import reactor.util.retry.*;
 
 @Service
 @Slf4j
@@ -16,22 +16,13 @@ public class HelloService {
 	@Autowired
 	private HelloRepository repository;
 
-	private static final RetryPolicy<Object> RETRY_POLICY = RetryPolicy.builder()
-		.handle(OptimisticLockingFailureException.class)
-		.withMaxRetries(Integer.MAX_VALUE)
-		.onFailedAttempt(e -> log.warn(e.getLastFailure().getMessage()))
-		.build();
-
 	public Mono<HelloCounter> hello(String name) {
 		var aName = processName(name);
-		return Failsafe.with(RETRY_POLICY).get(() -> doHello(aName));
-	}
-
-	private Mono<HelloCounter> doHello(String name) {
-		return repository.findById(name)
-			.defaultIfEmpty(new HelloCounter(name))
+		return repository.findById(aName)
+			.defaultIfEmpty(new HelloCounter(aName))
 			.map(HelloCounter::inc)
-			.flatMap(repository::save);
+			.flatMap(repository::save)
+			.retryWhen(Retry.indefinitely().filter(ex -> ex instanceof OptimisticLockingFailureException || ex instanceof DataIntegrityViolationException));
 	}
 
 	private static String processName(String name) {
