@@ -38,12 +38,10 @@ class HelloInjectorET {
 				.mapToObj(this::sayHello)
 				.collect(groupingBy(Result::message))
 		);
-		var results = task.join().values().stream()
+		var error = task.join().values().stream()
 			.map(rl -> rl.stream().reduce(Result::add).orElseThrow())
 			.sorted(comparing(Result::count).reversed())
-			.toList();
-		results.forEach(System.out::println);
-		var error = results.stream()
+			.peek(System.out::println)
 			.filter(Result::isError)
 			.findFirst();
 		if (error.isPresent())
