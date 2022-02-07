@@ -65,7 +65,7 @@ class HelloInjectorET {
 		}
 	}
 
-	static record Result(String message, int count, Object error) {
+	record Result(String message, int count, Object error) {
 
 		Result(HttpStatus status) {
 			this(status.name(), 1, status.isError() ? status : null);
