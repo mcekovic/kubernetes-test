@@ -4,7 +4,7 @@
 - JDK 17+
 - Maven 3.8+
 - WSL 2
-- Rancher Desktop 0.7+ (containerd runtime)
+- Rancher Desktop 1.0.1+ (containerd runtime)
 
 ### Build Java Artifact
 - `mvn clean package`
