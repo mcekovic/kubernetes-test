@@ -1,0 +1,4 @@
+loki:
+  serviceName: loki
+  servicePort: 3100
+  serviceScheme: http

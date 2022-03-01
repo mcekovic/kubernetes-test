@@ -17,6 +17,7 @@ public class HelloService {
 	private HelloRepository repository;
 
 	public Mono<HelloCounter> hello(String name) {
+		log.trace("hello(name={})", name);
 		var aName = processName(name);
 		return repository.findById(aName)
 			.defaultIfEmpty(new HelloCounter(aName))
